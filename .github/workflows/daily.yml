@@ -1,0 +1,26 @@
+name: Run Daily News Bot
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Runs at 8:30 AM IST
+  workflow_dispatch: # This is your manual PLAY button
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install google-generativeai requests
+
+      - name: Run script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
